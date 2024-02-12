@@ -5,10 +5,24 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'svg': "url('src/assets/neon.svg')",
+      },
+      plugins: [
+        function ({ addUtilities }) {
+          const newUtilities = {
+            '.bg-fixed': {
+              'background-attachment': 'fixed',
+            },
+          };
+          addUtilities(newUtilities, ['responsive', 'hover']);
+        },
+      ],
+    },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    require('@tailwindcss/forms')
   ],
 }
 
