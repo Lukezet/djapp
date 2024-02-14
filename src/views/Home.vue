@@ -1,42 +1,45 @@
 <template>
   <div class="w-full flex justify-center mb-12">
-    <header class="showprofile w-5/6 h-5/6 flex justify-center items-center mt-8" id="home">
-      <div class="principal-text flex justify-center mr-12 ">
-        <h1>PACKS DE MUSICA LISTOS PARA SONAR EN TU FIESTA</h1>
+    <header class="w-5/6 flex justify-center items-center mt-8 max-xl:w-11/12" id="home">
+      <div class="principal-text flex flex-col justify-center items-center">
+        <div class="flex flex-col justify-center items-start">
+          <h1>PACKS DE MUSICA </h1> <h1 class="flex justify-end items-start font-black tracking-normal bg-gradient-to-l from-teal-400 to-purple-500  bg bg-clip-text text-transparent">LISTOS</h1> <h1>PARA TU EVENTO</h1>
+        </div>
+        <img src="../assets/soundpackTransparent2.svg" alt="SoundPack" class="mt-6">
+          <span class="material-symbols-outlined text-5xl">keyboard_arrow_down</span>
       </div>
-      <div class="Pic-Container flex justify-center items-center">
-        <img src="../assets/homeImage.png" alt="soundImg" class="header-profile">
+      <div class="Pic-Container md:flex justify-center items-center p-6 max-xl:w-2/6 max-2xl:w-3/6 hidden">
+        <img src="../assets/homeImage.png" alt="soundImg">
       </div>
     </header>
-
   </div>
   <CarrouselFlag></CarrouselFlag>
 
   <body>
-    <div class="flex justify-center  h-auto w-full">
+    <div class="flex justify-center h-auto w-full">
       <div
-        class="container-style flex flex-col justify-start items-center w-4/6 mt-24 bg-neutral-800 bg-opacity-80 rounded-[40px] border-4 border-neutral-700 backdrop-blur-[50px]">
+        class="flex flex-col justify-start items-center w-11/12 mt-24 bg-neutral-800 bg-opacity-50 rounded-[40px] border-2 border-neutral-700 backdrop-blur-[50px]">
         <section
-          class="grid grid-cols-3 searcher my-12 h-32 w-5/6 border-4 border-violet-600 shadow-lg shadow-violet-600/50 rounded-3xl">
-          <div class="flex flex-col relative ml-4 justify-center items-start text-white italic">
+          class="grid searcher my-8 p-6 h-auto w-11/12 border-2 border-violet-600 shadow-lg shadow-violet-600/50 rounded-3xl">
+          <div class="flex flex-col relative justify-center items-start text-white italic">
             <label for="searcher">Buscador:</label>
             <input type="searcher" placeholder="Buscar pack"
-              class="w-5/6 h-2/5 italic font-medium pl-12 text-white bg-gradient-to-br from-neutral-900 to-zinc-700 rounded-[40px] shadow border border-white border-opacity-50 backdrop-blur-[37.38px] hover:shadow-lg hover:shadow-purple-500/50 transition duration-150 ease-out md:ease-in">
-            <img class="absolute w-6 bottom-9 left-4" src="../assets/search-normal.svg">
+              class="w-full  italic font-medium pl-12 py-2 text-white bg-gradient-to-br from-neutral-900 to-zinc-700 rounded-[40px] shadow border border-white border-opacity-50 ring-1 ring-inset ring-purple-300 backdrop-blur-[37.38px] hover:shadow-lg hover:shadow-purple-500/50 transition duration-150 ease-out md:ease-in">
+            <img class="absolute w-6 bottom-2 left-4" src="../assets/search-normal.svg">
           </div>
-          <div class="flex flex-col ml-4 justify-center items-start text-white italic">
+          <div class="flex flex-col justify-center items-start text-white italic">
             <label for="searcher">Artista:</label>
             <DropDownArtist></DropDownArtist>
           </div>
-          <div class="flex flex-col ml-4 justify-center items-start text-white italic">
+          <div class="flex flex-col justify-center items-start text-white italic">
             <label for="searcher">Genero musical:</label>
             <DropDownArtist></DropDownArtist>
           </div>
         </section>
-
+        <h3 class="font-montserrat text-xl font-bold text-opacity-20 text-white">LISTA DE SETS</h3>
         <ArticleSet v-for="set in displayedArticles" :key="set.idSet" :articleData="set"></ArticleSet>
         <!-- <SetList/> -->
-        <div class="flex justify-center items-center bg-neutral-800 bg-opacity-80 shadow-xl shadow-neutral-950 p-8  border-2 border-neutral-800 rounded-t-3xl ">
+        <div class="w-full flex justify-center items-center bg-neutral-800 bg-opacity-80 shadow-xl shadow-neutral-950 p-8  border-2 border-neutral-800 rounded-[40px] ">
           <div class="flex justify-center items-center h-16 w-16 mr-4 bg-neutral-900 border-2 border-violet-400 hover:border-4  rounded-full"><div class="h-5 w-5 bg-neutral-700 shadow-lg shadow-gray-500/50 rounded-full"></div></div>
           <button 
             v-if="paginationData.page != 1" 
@@ -321,8 +324,7 @@ const displayedArticles = computed(() => {
 
 <style scoped>
 .Pic-Container {
-  width: 37rem;
-  height: 37rem;
+
   flex-shrink: 0;
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
   box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.25);
@@ -330,14 +332,39 @@ const displayedArticles = computed(() => {
 }
 
 .principal-text {
-  width: 70%;
+  width: 100%;
+  border-radius: 1.5rem;
+  padding-top: 2rem;
+  padding-inline: 1rem;
   color: #FFF;
   font-family: Raleway;
-  font-size: 7rem;
   font-style: normal;
   font-weight: 900;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
+  box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(18.688133239746094px);
+}
+h1{
+  font-size: 4rem;
+  line-height: 1;
+}
+h3{
+  font-family: Montserrat;
 }
 
+@media (min-width: 380px) {
+  h1{
+    line-height: 1.5;
+  }
+
+}
+
+@media (max-width: 1650px) {
+  .principal-text{
+    font-size: 3rem;
+  }
+
+}
 .setimg {
   box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.50) inset;
 }

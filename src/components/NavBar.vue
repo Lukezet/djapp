@@ -3,7 +3,7 @@
       <i class="fas fa-bars text-white"></i>
     </div>
     <header class="nav-main h-16 flex justify-between items-stretch px-6">
-      <router-link :to="{ name: 'home' }" class="nav-brand items-center h-full w-48 text-white transition-colors hover:text-gray-900"><img src="../assets/soundpackTransparent2.svg" alt="SoundPack" class=""></router-link> 
+      <router-link :to="{ name: 'home' }" class="nav-brand items-center h-full w-48 text-white transition-colors hover:text-gray-900 hidden md:block"><img src="../assets/soundpackTransparent2.svg" alt="SoundPack" class=""></router-link> 
       <ul class="nav-menu text-white" :class="{ 'show': isMenuVisible }">
           <li class="nav-item">  
             <router-link :to="{ name: 'uploadFiles' }" class="item">Cargar sets</router-link>
@@ -91,7 +91,7 @@ const showMenu = () => {
 .menu-btn {
     display: none;
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     font-size: 24px;
     top: 15px;
     right: 30px;
@@ -123,7 +123,7 @@ const showMenu = () => {
     .nav-main ul.nav-menu{
         display: flex;
         flex-direction: column;
-        position: absolute;
+        position: fixed;
         z-index: 1;
         justify-content: center;
         align-items: center;
@@ -138,8 +138,8 @@ const showMenu = () => {
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(20px);
         box-shadow: 0 8px 32px 0 #7062d3;
-        border-radius: 0px 0px 10px 0px;
-        transform: translateY(-92vh);
+        border-radius: 0px 0px 20px 20px;
+        transform: translateY(-100vh);
     }
 
     .nav-main .nav-menu.show{
