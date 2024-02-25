@@ -1,34 +1,34 @@
 <template>
-  <div class=" w-full relative">
-  <article class="w-full relative  my-12 flex flex-col justify-center items-center">
-    <div class="main-article w-11/12 flex relative z-10 p-2 py-4 justify-between rounded-[20px] drop-shadow-lg">
-      <img class="object-cover w-[30%] rounded-[20px] shadow-neutral-900 shadow-lg"
-        :src="articleData.img" />
-      <div class="w-[65%] relative">
-        <h1 class="text-white text-md font-['Poppins'] tracking-wide">
+  <article class="w-full relative  my-12 flex flex-col justify-center items-center lg:mb-40">
+    <div class="main-article w-11/12 flex relative z-10 p-2 py-4 justify-between rounded-[20px] drop-shadow-lg lg:w-10/12 lg:justify-end lg:h-40 2xl:h-52">
+      <img class="setImg w-[35%] object-cover rounded-[20px]  lg:absolute lg:w-64 lg:left-[0%] lg:-top-[33%] 2xl:-top-[30%] 2xl:w-80"
+        :src="articleData.img" alt="SetIMG"/>
+      <div class="w-[60%] relative 2xl:w-[65%]">
+        <h1 class="text-white text-md font-['Poppins'] tracking-wide sm:text-lg md:text-xl md:ml-4 2xl:text-2xl">
           {{ articleData.name }}</h1>
-        <p class="text-white text-opacity-50 font-['Raleway']">
+        <p class="text-white text-opacity-50 font-['Raleway'] text-xs sm:text-sm md:ml-4 2xl:text-lg">
           Duracion {{articleData.duration}}min - Lanzamiento {{articleData.release}}
         </p>
-        <section class="flex justify-end items-start pr-4">
+        <section class="flex sm:h-[50%] justify-end items-end pr-4 xl:justify-start xl:ml-4">
           <button
-            class="flex justify-center cursor-pointer p-2  mr-4 bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in ">
+            class="flex justify-center items-center cursor-pointer p-2 sm:px-4 2xl:mr-12 mr-4 bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in ">
             <!-- <span class="material-symbols-outlined">
               play_circle
             </span> -->
+            <div class="hidden sm:block sm:mr-4 font-['Raleway'] font-semibold tracking-wider">Reproducir</div>
             <img src="../assets/play.svg" alt="play">
           </button>
           <button
-            class="flex justify-center cursor-pointer  p-2   bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in">
-            
+            class="flex justify-center items-center cursor-pointer  p-2 sm:px-4  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in">
+            <div class="hidden sm:block sm:mr-4 font-['Raleway'] font-semibold tracking-wider">Descargar</div>
             <img src="../assets/frame.svg" alt="download"><!-- <span class="material-symbols-outlined">
               download
             </span> -->
           </button>
         </section>
-        <div class="flex justify-center items-center absolute bottom-2 left-0">
-          <img src="../assets/star.svg" class="w-6 relative">
-          <div class="text-neutral-400 text-lg font-semibold font-['Poppins']">
+        <div class="flex justify-center items-center absolute bottom-2 left-0 sm:top-1 sm:right-3 sm:bottom-auto sm:left-auto">
+          <img src="../assets/star.svg" class="w-6 relative lg:w-10">
+          <div class="text-neutral-400 text-lg font-semibold font-['Poppins'] lg:text-2xl ">
             {{ articleData.score }}
           </div>
         </div>
@@ -40,10 +40,10 @@
       class="absolute -bottom-3 left-[48%] z-20 h-8 w-8 text-xs flex flex-wrap text-white text-opacity-50 justify-center items-center bg-gradient-to-br from-neutral-800 to-zinc-500 hover:border   hover:text-violet-500 hover:border-violet-500 rounded-full cursor-pointer  transition duration-150 ease-out md:ease-in ">
       <span class="material-symbols-outlined text-lg">{{ open ? 'visibility_off' : 'visibility'}}</span>
     </div>
-    <div @click="toggleSongsList"
+    <!-- <div @click="toggleSongsList"
       class=" hidden absolute -bottom-3 left-[47%] z-20 px-2 text-xs md:flex flex-wrap text-white justify-center items-center bg-gradient-to-br from-neutral-800 to-zinc-500 border border-white  hover:text-violet-500 hover:border-violet-500 rounded-full cursor-pointer  transition duration-150 ease-out md:ease-in ">
       <span class="material-symbols-outlined text-lg">{{ shouldShowSongsList ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</span>
-    </div>
+    </div> -->
   </article>
   <!-- Mostrar la lista de canciones con transición -->
 <transition name="slide-fade">
@@ -58,7 +58,6 @@
     </div>
 
 </transition> 
-</div>
 <Teleport to="body" class="overflow-hidden">
 <Transition name="modal-outer" appear>
   <div v-if="open" class="fixed h-[100%] z-30  w-full bg-black bg-opacity-40 top-0 left-0 flex justify-center px-8">
@@ -130,8 +129,8 @@ const toggleSongsList = () => {
   box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(18.688133239746094px);
 }
-p{
-  font-size: 12px;
+article .setImg{
+  box-shadow: rgb(0, 0, 0) 20px 10px 0px 0px inset;
 }
 h3{
   font-family: Montserrat;

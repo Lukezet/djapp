@@ -11,7 +11,7 @@
       </ListboxButton>
 
       <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-        <ListboxOptions class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-3xl bg-gradient-to-br from-neutral-900 to-zinc-700 border border-white py-1 text-base shadow-lg shadow-purple-300/50 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <ListboxOptions class="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-3xl bg-gradient-to-br from-neutral-900 to-zinc-700 border border-white py-1 text-base shadow-lg shadow-purple-300/50 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           <ListboxOption as="template" v-for="tipo in tiposFacturas" :key="tipo.id" :value="tipo" v-slot="{ active, selected }">
             <li :class="[active ? 'bg-gradient-to-r from-violet-600 to-teal-400 text-white' : 'text-gray-200', 'relative cursor-default select-none py-2 pl-3 pr-9']">
               <div class="flex items-center">

@@ -1,14 +1,14 @@
 <template>
   <div class="w-full flex justify-center mb-12">
-    <header class="w-5/6 flex justify-center items-center mt-8 max-xl:w-11/12" id="home">
+    <header class="w-5/6 flex justify-center items-center sm:mt-8 max-xl:w-11/12" id="home">
       <div class="principal-text flex flex-col justify-center items-center">
         <div class="flex flex-col justify-center items-start">
           <h1>PACKS DE MUSICA </h1> <h1 class="flex justify-end items-start font-black tracking-normal bg-gradient-to-l from-teal-400 to-purple-500  bg bg-clip-text text-transparent">LISTOS</h1> <h1>PARA TU EVENTO</h1>
         </div>
-        <img src="../assets/soundpackTransparent2.svg" alt="SoundPack" class="mt-6">
-          <span class="material-symbols-outlined text-5xl">keyboard_arrow_down</span>
+        <img src="../assets/soundpackTransparent2.svg" alt="SoundPack" class="mt-6 md:hidden">
+          <span class="material-symbols-outlined text-5xl md:hidden">keyboard_arrow_down</span>
       </div>
-      <div class="Pic-Container md:flex justify-center items-center p-6 max-xl:w-2/6 max-2xl:w-3/6 hidden">
+      <div class="Pic-Container justify-center items-center p-6 lg:flex max-xl:w-3/6  hidden">
         <img src="../assets/homeImage.png" alt="soundImg">
       </div>
     </header>
@@ -18,9 +18,9 @@
   <body>
     <div class="flex justify-center h-auto w-full">
       <div
-        class="flex flex-col justify-start items-center w-11/12 mt-24 bg-neutral-800 bg-opacity-50 rounded-[40px] border-2 border-neutral-700 backdrop-blur-[50px]">
+        class="flex flex-col justify-start items-center w-11/12 my-24 bg-neutral-800 bg-opacity-50 rounded-[40px] border-2 border-neutral-700 backdrop-blur-[50px] lg:w-10/12 xl:w-8/12">
         <section
-          class="grid searcher my-8 p-6 h-auto w-11/12 border-2 border-violet-600 shadow-lg shadow-violet-600/50 rounded-3xl">
+          class="grid searcher my-8 p-6 h-auto w-11/12 border-2 border-violet-600 shadow-lg shadow-violet-600/50 rounded-3xl lg:grid-cols-3 lg:gap-4">
           <div class="flex flex-col relative justify-center items-start text-white italic">
             <label for="searcher">Buscador:</label>
             <input type="searcher" placeholder="Buscar pack"
@@ -36,7 +36,7 @@
             <DropDownArtist></DropDownArtist>
           </div>
         </section>
-        <h3 class="font-montserrat text-xl font-bold text-opacity-20 text-white">LISTA DE SETS</h3>
+        <h3 class="font-montserrat text-xl font-bold text-opacity-20 text-white xl:mb-24">LISTA DE SETS</h3>
         <ArticleSet v-for="set in displayedArticles" :key="set.idSet" :articleData="set"></ArticleSet>
         <!-- <SetList/> -->
         <div class="w-full flex justify-center items-center bg-neutral-800 bg-opacity-80 shadow-xl shadow-neutral-950 p-8  border-2 border-neutral-800 rounded-[40px] ">
@@ -52,6 +52,7 @@
             v-for="pageNumber in paginationData.pages.slice(paginationData.page-1,paginationData.page+3)"
             :key="pageNumber"
             @click="paginationData.page=pageNumber"
+            :class="[{ 'border-2 border-white ': pageNumber === paginationData.page }]"
             class="h-16 w-8 px-2 text-lg flex flex-wrap text-white justify-center items-center bg-gradient-to-br from-neutral-800 to-zinc-500 border hover:border-2 border-violet-400  hover:text-violet-500 hover:border-violet-500 rounded-sm cursor-pointer  transition duration-150 ease-out md:ease-in"
             >{{ pageNumber }}
           </button>
@@ -66,7 +67,24 @@
       </div>
     </div>
   </body>
-  <footer class="h-screen">footer</footer>
+  <footer class="Pic-Container flex flex-col justify-end items-center rounded-t-2xl fixed w-full h-[10%] bottom-0 bg-yellow-400">
+    <div class="absolute flex justify-between items-center -top-8 w-52">
+      <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+            <img class="w-8" src="../assets/before.svg" alt="play">
+    </button>
+    <button @click="playing = !playing" class="w-16 h-16 flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+            <img v-if="!playing" class="w-10" src="../assets/playMusic.svg" alt="play">
+            <img v-else class="w-10" src="../assets/pause.svg" alt="play">
+    </button>
+    <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+            <img class="w-8" src="../assets/next.svg" alt="play">
+    </button>
+    </div>
+    <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" src="../assets/image27.png" alt="imgSetPlayList">
+    <h4 class="font-['Montserrat'] text-opacity-40 text-white">Nº 21 Electro dubstep 2023</h4>
+    <div class="h-3 mt-2 w-full z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+  </footer>
+  
 </template>
 <script setup>
 import { ref, watch } from "vue";
@@ -289,7 +307,7 @@ let allSets = [
 
   }
 ];
-
+let playing = ref(false)
 
 
 function paginate(){
@@ -324,10 +342,9 @@ const displayedArticles = computed(() => {
 
 <style scoped>
 .Pic-Container {
-
   flex-shrink: 0;
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
-  box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 8px 8px rgba(49, 49, 49, 0.25);
   backdrop-filter: blur(18.688133239746094px);
 }
 
@@ -340,13 +357,13 @@ const displayedArticles = computed(() => {
   font-family: Raleway;
   font-style: normal;
   font-weight: 900;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
+  background: linear-gradient(115deg, rgba(54, 54, 54, 0.4) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
   box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(18.688133239746094px);
 }
 h1{
   font-size: 4rem;
-  line-height: 1;
+  line-height: 1.2;
 }
 h3{
   font-family: Montserrat;
@@ -358,13 +375,43 @@ h3{
   }
 
 }
-
-@media (max-width: 1650px) {
+@media (min-width: 450px) {
+  h1 {
+    font-size: calc(4.5rem + 1vw);
+    line-height: 1.2;
+  }
+}
+@media (min-width: 600px) {
+  h1 {
+    font-size: calc(5.5rem + 1vw);
+    line-height: 1.2;
+  }
+}
+@media (min-width: 768px) {
   .principal-text{
-    font-size: 3rem;
+    background:none;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
 }
+
+@media (min-width: 1650px) {
+  h1{
+    font-size: calc(6rem + 1vw);
+  }
+
+}
+/* @media (min-height: 600px) and (max-height: 780px) and (min-width: 900px) {
+  .Pic-Container {
+    width: 40%;
+  } 
+
+  h1 {
+    font-size: calc(4.5rem + 1vw);
+    line-height: 1;
+  }
+} */
 .setimg {
   box-shadow: 0px 4px 8px 8px rgba(0, 0, 0, 0.50) inset;
 }
