@@ -37,7 +37,7 @@
           </div>
         </section>
         <h3 class="font-montserrat text-xl font-bold text-opacity-20 text-white xl:mb-24">LISTA DE SETS</h3>
-        <ArticleSet v-for="set in displayedArticles" :key="set.idSet" :articleData="set"></ArticleSet>
+        <ArticleSet v-for="set in displayedArticles" :key="set.idSet" :articleData="set" :playing="selectedSet.idSet==set.idSet&&playing" @update:selectedSong="handleSelectedSongUpdate" ></ArticleSet>
         <!-- <SetList/> -->
         <div class="w-full flex justify-center items-center bg-neutral-800 bg-opacity-80 shadow-xl shadow-neutral-950 p-8  border-2 border-neutral-800 rounded-[40px] ">
           <div class="flex justify-center items-center h-16 w-16 mr-4 bg-neutral-900 border-2 border-violet-400 hover:border-4  rounded-full"><div class="h-5 w-5 bg-neutral-700 shadow-lg shadow-gray-500/50 rounded-full"></div></div>
@@ -72,7 +72,7 @@
       <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img class="w-8" src="../assets/before.svg" alt="play">
     </button>
-    <button @click="playing = !playing" class="w-16 h-16 flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+    <button @click="playSound" class="w-16 h-16 flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img v-if="!playing" class="w-10" src="../assets/playMusic.svg" alt="play">
             <img v-else class="w-10" src="../assets/pause.svg" alt="play">
     </button>
@@ -80,8 +80,8 @@
             <img class="w-8" src="../assets/next.svg" alt="play">
     </button>
     </div>
-    <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" src="../assets/image27.png" alt="imgSetPlayList">
-    <h4 class="font-['Montserrat'] text-opacity-40 text-white">Nº 21 Electro dubstep 2023</h4>
+    <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
+    <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
     <div class="h-3 mt-2 w-full z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
   </footer>
   
@@ -92,8 +92,7 @@ import { computed } from "@vue/reactivity";
 import CarrouselFlag from "../components/CarrouselFlag.vue";
 import DropDownArtist from "../components/DropDownArtist.vue";
 import ArticleSet from "../components/ArticleSet.vue"
-import SetList from "../components/SetList.vue"
-import { all } from "axios";
+import {Howl, Howler} from "howler";
 
 const pinkFloydSongs = [
   'Shine On You Crazy Diamond',
@@ -130,6 +129,7 @@ const pinkFloydSongs = [
 let allSets = [
 {
     idSet: 1,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -140,6 +140,7 @@ let allSets = [
   },
   {
     idSet: 2,
+    setRoute:'src/assets/music/Here it Comes - TrackTribe.mp3',
     name: `Nº 31 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -149,6 +150,7 @@ let allSets = [
 
   },{
     idSet: 3,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -159,6 +161,7 @@ let allSets = [
   },
   {
     idSet: 4,
+    setRoute:'src/assets/music/It Was a Time - TrackTribe.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -169,6 +172,7 @@ let allSets = [
   },
   {
     idSet: 5,
+    setRoute:'src/assets/music/It Was a Time - TrackTribe.mp3',
     name: `Nº 31 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -179,6 +183,7 @@ let allSets = [
   },
   {
     idSet: 6,
+    setRoute:'src/assets/music/It Was a Time - TrackTribe.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -189,6 +194,7 @@ let allSets = [
   },
   {
     idSet: 7,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 71 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -199,6 +205,7 @@ let allSets = [
   },
   {
     idSet: 8,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 88 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -209,6 +216,7 @@ let allSets = [
   },
   {
     idSet: 9,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 65 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -219,6 +227,7 @@ let allSets = [
   },
   {
     idSet: 10,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -229,6 +238,7 @@ let allSets = [
   },
   {
     idSet: 11,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 31 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -238,6 +248,7 @@ let allSets = [
 
   },{
     idSet: 12,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -248,6 +259,7 @@ let allSets = [
   },
   {
     idSet: 13,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -258,6 +270,7 @@ let allSets = [
   },
   {
     idSet: 14,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 31 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -268,6 +281,7 @@ let allSets = [
   },
   {
     idSet: 15,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 21 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -278,6 +292,7 @@ let allSets = [
   },
   {
     idSet: 16,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 71 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -288,6 +303,7 @@ let allSets = [
   },
   {
     idSet: 17,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 88 Electro House 2023`,
     duration: 64,
     release: `26/12/2023`,
@@ -298,6 +314,7 @@ let allSets = [
   },
   {
     idSet: 18,
+    setRoute:'src/assets/music/LosingMyMind.mp3',
     name: `Nº 65 Electro dubstep 2023`,
     duration: 48,
     release: `12/12/2023`,
@@ -307,8 +324,54 @@ let allSets = [
 
   }
 ];
-let playing = ref(false)
+const playing = ref(false)
+let currentSongPlaying = ref(null);
+let selectedSet= ref({
+    idSet: 1,
+    setRoute:'src/assets/music/Mulholland - King Canyon.mp3',
+    name: `Nº 21 Electro dubstep 2023`,
+    duration: 48,
+    release: `12/12/2023`,
+    score: 4.8,
+    img: '/src/assets/image25.png',
+    songs: pinkFloydSongs,
 
+  })
+
+let sound = new Howl({
+  src: [selectedSet.value.setRoute], // Reemplaza con la ruta de tu canción
+});
+
+const playSound = () => {
+  if (playing.value) {
+    sound.pause();
+  } else {
+    sound.play();
+  }
+  playing.value = !playing.value
+};
+
+// Manejar la actualización de la canción seleccionada
+const handleSelectedSongUpdate = (setToSend) => {
+  if (selectedSet.value==setToSend){//if the same song i am clicking its playing then pause it
+    if(sound.playing()){
+      sound.pause();
+      playing.value = false
+    }
+    else{ //if the same song i am clicking its paused then play it 
+      playSound() 
+    }
+
+  }
+  else { // in case that the song i am clicking its different than the older, then stop it and play the new
+    selectedSet.value = setToSend;
+    sound.stop();
+    sound = new Howl({
+    src: [selectedSet.value.setRoute],})
+    sound.play();
+    playing.value = true
+  }
+};
 
 function paginate(){
   let page = paginationData.value.page;

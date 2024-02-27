@@ -10,20 +10,17 @@
           Duracion {{articleData.duration}}min - Lanzamiento {{articleData.release}}
         </p>
         <section class="flex sm:h-[50%] justify-end items-end pr-4 xl:justify-start xl:ml-4">
-          <button
-            class="flex justify-center items-center cursor-pointer p-2 sm:px-4 2xl:mr-12 mr-4 bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in ">
-            <!-- <span class="material-symbols-outlined">
-              play_circle
-            </span> -->
+          <button v-if="!playing" @click="playSet(articleData)" class="flex justify-center items-center cursor-pointer p-2 sm:px-4 2xl:mr-12 mr-4 bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in ">
             <div class="hidden sm:block sm:mr-4 font-['Raleway'] font-semibold tracking-wider">Reproducir</div>
             <img src="../assets/play.svg" alt="play">
           </button>
-          <button
-            class="flex justify-center items-center cursor-pointer  p-2 sm:px-4  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in">
+          <button v-else @click="playSet(articleData)" class="flex justify-center items-center cursor-pointer p-2 sm:px-4 2xl:mr-12 mr-4 bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in ">
+            <div class="hidden sm:block sm:mr-4 font-['Raleway'] font-semibold tracking-wider">Reproducir</div>
+            <img class="w-6" src="../assets/pause.svg" alt="pause">
+          </button>
+          <button class="flex justify-center items-center cursor-pointer  p-2 sm:px-4  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-3xl transition duration-150 ease-out md:ease-in">
             <div class="hidden sm:block sm:mr-4 font-['Raleway'] font-semibold tracking-wider">Descargar</div>
-            <img src="../assets/frame.svg" alt="download"><!-- <span class="material-symbols-outlined">
-              download
-            </span> -->
+            <img src="../assets/frame.svg" alt="download">
           </button>
         </section>
         <div class="flex justify-center items-center absolute bottom-2 left-0 sm:top-1 sm:right-3 sm:bottom-auto sm:left-auto">
@@ -79,8 +76,10 @@
 </template>
 <script setup>
 import { ref } from "vue";
+const emits = defineEmits(['update:selectedSong'])
 const props = defineProps({
   articleData: Object,
+  playing:false
 });
 const shouldShowSongsList = ref(false);
 const open = ref(false)
@@ -89,6 +88,9 @@ const toggleSongsList = () => {
   console.log(shouldShowSongsList.value)
 };
 
+const playSet = (setToSend) =>{
+  emits('update:selectedSong', setToSend);
+} 
 
 // //! TO DO a
 // let articleData = ref(
