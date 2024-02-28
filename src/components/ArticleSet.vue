@@ -1,6 +1,6 @@
 <template>
   <article class="w-full relative  my-12 flex flex-col justify-center items-center lg:mb-40">
-    <div class="main-article w-11/12 flex relative z-10 p-2 py-4 justify-between rounded-[20px] drop-shadow-lg lg:w-10/12 lg:justify-end lg:h-40 2xl:h-52">
+    <div class="main-article w-11/12 flex relative z-10 p-2 py-4 justify-between rounded-[20px] lg:w-10/12 lg:justify-end lg:h-40 2xl:h-52">
       <img class="setImg w-[35%] object-cover rounded-[20px]  lg:absolute lg:w-64 lg:left-[0%] lg:-top-[33%] 2xl:-top-[30%] 2xl:w-80"
         :src="articleData.img" alt="SetIMG"/>
       <div class="w-[60%] relative 2xl:w-[65%]">

@@ -83,6 +83,8 @@
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
     <div class="h-3 mt-2 w-full z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+    <div class="absolute bottom-3 left-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
+    <div class="absolute bottom-3 right-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
   </footer>
   
 </template>
@@ -325,7 +327,8 @@ let allSets = [
   }
 ];
 const playing = ref(false)
-let currentSongPlaying = ref(null);
+
+let timer = ref('0:00');
 let selectedSet= ref({
     idSet: 1,
     setRoute:'src/assets/music/Mulholland - King Canyon.mp3',
@@ -339,7 +342,10 @@ let selectedSet= ref({
   })
 
 let sound = new Howl({
-  src: [selectedSet.value.setRoute], // Reemplaza con la ruta de tu canción
+  src: [selectedSet.value.setRoute],  
+  onload: function() {
+    timer.value = formatTime(Math.round(sound.duration()));
+  }
 });
 
 const playSound = () => {
@@ -347,12 +353,17 @@ const playSound = () => {
     sound.pause();
   } else {
     sound.play();
+    
   }
   playing.value = !playing.value
 };
-
+// Fires when the sound finishes playing.
+sound.on('end', function(){
+  console.log('Finished!');
+});
 // Manejar la actualización de la canción seleccionada
 const handleSelectedSongUpdate = (setToSend) => {
+
   if (selectedSet.value==setToSend){//if the same song i am clicking its playing then pause it
     if(sound.playing()){
       sound.pause();
@@ -367,11 +378,22 @@ const handleSelectedSongUpdate = (setToSend) => {
     selectedSet.value = setToSend;
     sound.stop();
     sound = new Howl({
-    src: [selectedSet.value.setRoute],})
+    src: [selectedSet.value.setRoute],onload: function() {
+    timer.value = formatTime(Math.round(sound.duration()));
+    }})
     sound.play();
     playing.value = true
   }
 };
+
+  
+   //Format the time from seconds to M:SS.
+   
+function formatTime(secs) {
+  var minutes = Math.floor(secs / 60) || 0;
+  var seconds = (secs - minutes * 60) || 0;
+  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
 
 function paginate(){
   let page = paginationData.value.page;
