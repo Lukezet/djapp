@@ -72,7 +72,7 @@
       <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img class="w-8" src="../assets/before.svg" alt="play">
     </button>
-    <button @click="playSound" class="w-16 h-16 flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+    <button @click="playSound" class="w-[4.5rem] h-[4.5rem] flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img v-if="!playing" class="w-10" src="../assets/playMusic.svg" alt="play">
             <img v-else class="w-10" src="../assets/pause.svg" alt="play">
     </button>
@@ -82,14 +82,16 @@
     </div>
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
-    <div class="h-3 mt-2 w-full z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+    <section class="w-full flex justify-start">
+      <div id="progress" :style="{width:progressBar}" class="h-3 mt-2  z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+    </section>
     <div class="absolute bottom-3 left-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
-    <div class="absolute bottom-3 right-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
+    <div class="absolute bottom-3 right-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ duration }}</div>
   </footer>
   
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { computed } from "@vue/reactivity";
 import CarrouselFlag from "../components/CarrouselFlag.vue";
 import DropDownArtist from "../components/DropDownArtist.vue";
@@ -326,26 +328,40 @@ let allSets = [
 
   }
 ];
-const playing = ref(false)
 
-let timer = ref('0:00');
-let selectedSet= ref({
-    idSet: 1,
-    setRoute:'src/assets/music/Mulholland - King Canyon.mp3',
-    name: `Nº 21 Electro dubstep 2023`,
-    duration: 48,
-    release: `12/12/2023`,
-    score: 4.8,
-    img: '/src/assets/image25.png',
-    songs: pinkFloydSongs,
+const playing = ref(false);
+const timer = ref('0:00');
+const duration = ref('0:00');
+const progressBar = ref(0)
+const selectedSet = ref({
+  idSet: 1,
+  setRoute: 'src/assets/music/Mulholland - King Canyon.mp3',
+  name: `Nº 21 Electro dubstep 2023`,
+  duration: 48,
+  release: `12/12/2023`,
+  score: 4.8,
+  img: '/src/assets/image25.png',
+  songs: pinkFloydSongs,
+});
+// progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
+let sound = null;
 
-  })
-
-let sound = new Howl({
-  src: [selectedSet.value.setRoute],  
-  onload: function() {
-    timer.value = formatTime(Math.round(sound.duration()));
-  }
+// Iniciar el temporizador cuando se monte el componente
+onMounted(() => {
+  sound = new Howl({
+    src: [selectedSet.value.setRoute],
+    onplay: () => {
+      updateTimer();
+      duration.value = formatTime(Math.round(sound.duration()));
+      playing.value = true; 
+    },
+    onpause:()=>{
+      playing.value = false;
+    },
+    onend: ()=>{
+        playing.value = false;
+      }
+  });
 });
 
 const playSound = () => {
@@ -353,39 +369,45 @@ const playSound = () => {
     sound.pause();
   } else {
     sound.play();
-    
   }
-  playing.value = !playing.value
+  // playing.value = !playing.value;
 };
-// Fires when the sound finishes playing.
-sound.on('end', function(){
-  console.log('Finished!');
-});
-// Manejar la actualización de la canción seleccionada
+
 const handleSelectedSongUpdate = (setToSend) => {
-
-  if (selectedSet.value==setToSend){//if the same song i am clicking its playing then pause it
-    if(sound.playing()){
+  if (selectedSet.value == setToSend) {
+    if (sound.playing()) {
       sound.pause();
-      playing.value = false
+      // playing.value = false;
+    } else {
+      playSound();
     }
-    else{ //if the same song i am clicking its paused then play it 
-      playSound() 
-    }
-
-  }
-  else { // in case that the song i am clicking its different than the older, then stop it and play the new
+  } else {
     selectedSet.value = setToSend;
     sound.stop();
     sound = new Howl({
-    src: [selectedSet.value.setRoute],onload: function() {
-    timer.value = formatTime(Math.round(sound.duration()));
-    }})
+      src: [selectedSet.value.setRoute],
+      onplay: () => {
+        updateTimer();
+        duration.value = formatTime(Math.round(sound.duration()))
+        playing.value = true 
+      },
+      onpause:()=>{
+      playing.value = false;
+    },
+      onend: ()=>{
+        playing.value = false;
+      }
+    });
     sound.play();
-    playing.value = true
   }
 };
 
+function updateTimer() {
+  setInterval(() => {
+    timer.value = formatTime(Math.round(sound.seek()));
+    progressBar.value = (((sound.seek() / sound.duration()) * 100) || 0) + '%';//enviamos el ancho de la barra de reproduccion
+  }, 100); // Actualiza el temporizador cada segundo
+}
   
    //Format the time from seconds to M:SS.
    
