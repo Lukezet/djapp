@@ -82,8 +82,8 @@
     </div>
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
-    <section class="w-full flex justify-start">
-      <div id="progress" :style="{width:progressBar}" class="h-3 mt-2  z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+    <section class="w-full flex justify-start" @click="handleProgressBarClick">
+      <div id="progress" :style="{width:progressBar}"  class="h-3 mt-2  z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
     </section>
     <div class="absolute bottom-3 left-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
     <div class="absolute bottom-3 right-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ duration }}</div>
@@ -416,6 +416,20 @@ function formatTime(secs) {
   var seconds = (secs - minutes * 60) || 0;
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
+
+const handleProgressBarClick = (event) => {
+  const mouseX = event.clientX; // Obtener la posición horizontal del clic
+  const windowWidth = window.innerWidth; // Obtener el ancho de la ventana del navegador  // Calcular el porcentaje del clic con respecto al ancho de la barra de progreso
+  const percentClicked = (mouseX / windowWidth) * 100;
+  console.log("clickeas el % "+percentClicked)
+  console.log("clickeas el mouseX "+mouseX)
+  console.log("clickeas el windowWidth "+windowWidth)
+  
+    // Calcular la posición en la canción correspondiente al porcentaje clickeado
+    const newPosition = (percentClicked / 100) * sound.duration();
+  // Usar el porcentaje para realizar alguna acción, como buscar en la canción
+  sound.seek(newPosition);
+};
 
 function paginate(){
   let page = paginationData.value.page;
