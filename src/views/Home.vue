@@ -67,7 +67,8 @@
       </div>
     </div>
   </body>
-  <footer class="Pic-Container flex flex-col justify-end items-center rounded-t-2xl fixed w-full h-[10%] bottom-0 bg-yellow-400">
+  <transition name="slide-fade">
+  <footer v-show="musicPlayerBar" class="Pic-Container flex flex-col justify-end items-center rounded-t-2xl fixed w-full h-[10%] bottom-0 bg-yellow-400">
     <div class="absolute flex justify-between items-center -top-8 w-52">
       <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img class="w-8" src="../assets/before.svg" alt="play">
@@ -82,13 +83,21 @@
     </div>
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
-    <section class="w-full flex justify-start" @click="handleProgressBarClick">
-      <div id="progress" :style="{width:progressBar}"  class="h-3 mt-2  z-20 bg-gradient-to-r from-violet-500 to-teal-400 "></div>
+    <section  class="w-full flex justify-start"
+    @mousemove="handleMouseMove"
+      @mouseover="showTooltip = true"
+      @mouseout="showTooltip = false"
+      @click="handleProgressBarClick">
+      <div id="progress" :style="{width:progressBar}"  class="relative h-3 mt-2  z-20 bg-gradient-to-r from-violet-500 to-teal-400 ">
+        <div v-if="showTooltip" :style="{ top: '-12px', left: hoverX + 'px' }" class="absolute -mt-8 -ml-4 p-2 bg-neutral-900 text-white  opacity-70 rounded-md">
+        {{hoverTimer}}
+      </div>  
+    </div>
     </section>
     <div class="absolute bottom-3 left-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ timer }}</div>
     <div class="absolute bottom-3 right-2 font-['Montserrat'] text-opacity-40 text-white text-xs">{{ duration }}</div>
   </footer>
-  
+  </transition>
 </template>
 <script setup>
 import { ref, watch, onMounted } from "vue";
@@ -330,6 +339,10 @@ let allSets = [
 ];
 
 const playing = ref(false);
+const showTooltip = ref(false);
+const musicPlayerBar = ref(false);
+const hoverX = ref(0);
+let hoverTimer = ref('0:00');
 const timer = ref('0:00');
 const duration = ref('0:00');
 const progressBar = ref(0)
@@ -389,7 +402,8 @@ const handleSelectedSongUpdate = (setToSend) => {
       onplay: () => {
         updateTimer();
         duration.value = formatTime(Math.round(sound.duration()))
-        playing.value = true 
+        playing.value = true
+        musicPlayerBar.value = true 
       },
       onpause:()=>{
       playing.value = false;
@@ -406,7 +420,7 @@ function updateTimer() {
   setInterval(() => {
     timer.value = formatTime(Math.round(sound.seek()));
     progressBar.value = (((sound.seek() / sound.duration()) * 100) || 0) + '%';//enviamos el ancho de la barra de reproduccion
-  }, 100); // Actualiza el temporizador cada segundo
+  }, 10); // Actualiza el temporizador cada segundo
 }
   
    //Format the time from seconds to M:SS.
@@ -417,10 +431,18 @@ function formatTime(secs) {
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
 
+const handleMouseMove = (event) => {
+  hoverX.value = event.clientX;
+  const windowWidth = window.innerWidth; // Obtener el ancho de la ventana del navegador  // Calcular el porcentaje del clic con respecto al ancho de la barra de progreso
+  const percentClicked = (hoverX.value / windowWidth) * 103.33;//porq 103 y no 100?
+  const newPosition = (percentClicked / 100) * sound.duration();
+  hoverTimer.value = formatTime(Math.round(newPosition))
+};
+
 const handleProgressBarClick = (event) => {
   const mouseX = event.clientX; // Obtener la posición horizontal del clic
   const windowWidth = window.innerWidth; // Obtener el ancho de la ventana del navegador  // Calcular el porcentaje del clic con respecto al ancho de la barra de progreso
-  const percentClicked = (mouseX / windowWidth) * 100;
+  const percentClicked = (mouseX / windowWidth) * 103.33;
   console.log("clickeas el % "+percentClicked)
   console.log("clickeas el mouseX "+mouseX)
   console.log("clickeas el windowWidth "+windowWidth)
@@ -462,6 +484,20 @@ const displayedArticles = computed(() => {
 </script>
 
 <style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translatey(100px);
+  opacity: 1;
+}
+
 .Pic-Container {
   flex-shrink: 0;
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 6.05%, rgba(255, 255, 255, 0.10) 70.78%);
