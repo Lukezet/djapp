@@ -73,7 +73,7 @@
       <button class="w-12 h-12 flex justify-center items-center cursor-pointer bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img class="w-8" src="../assets/before.svg" alt="play">
     </button>
-    <button @click="playSound" class="w-[4.5rem] h-[4.5rem] flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
+    <button type="button" @click="playSound" class="w-[4.5rem] h-[4.5rem] flex justify-center items-center cursor-pointer  bg-gradient-to-br from-neutral-800 to-zinc-600  text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-teal-400  hover:text-white shadow-lg shadow-neutral-900 hover:shadow-lg hover:shadow-violet-500/50 hover:border-purple-200 rounded-full transition duration-150 ease-out md:ease-in">
             <img v-if="!playing" class="w-10" src="../assets/playMusic.svg" alt="play">
             <img v-else class="w-10" src="../assets/pause.svg" alt="play">
     </button>
@@ -81,6 +81,7 @@
             <img class="w-8" src="../assets/next.svg" alt="play">
     </button>
     </div>
+    <VolumeControl class="absolute top-8 right-4 w-48" />
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
     <section  class="w-full flex justify-start"
@@ -105,6 +106,7 @@ import { computed } from "@vue/reactivity";
 import CarrouselFlag from "../components/CarrouselFlag.vue";
 import DropDownArtist from "../components/DropDownArtist.vue";
 import ArticleSet from "../components/ArticleSet.vue"
+import VolumeControl from "../components/VolumeControl.vue";
 import {Howl, Howler} from "howler";
 
 const pinkFloydSongs = [
@@ -359,24 +361,6 @@ const selectedSet = ref({
 // progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
 let sound = null;
 
-// Iniciar el temporizador cuando se monte el componente
-onMounted(() => {
-  sound = new Howl({
-    src: [selectedSet.value.setRoute],
-    onplay: () => {
-      updateTimer();
-      duration.value = formatTime(Math.round(sound.duration()));
-      playing.value = true; 
-    },
-    onpause:()=>{
-      playing.value = false;
-    },
-    onend: ()=>{
-        playing.value = false;
-      }
-  });
-});
-
 const playSound = () => {
   if (playing.value) {
     sound.pause();
@@ -394,7 +378,7 @@ const handleSelectedSongUpdate = (setToSend) => {
     } else {
       playSound();
     }
-  } else {
+  } else if (sound){
     selectedSet.value = setToSend;
     sound.stop();
     sound = new Howl({
@@ -413,6 +397,26 @@ const handleSelectedSongUpdate = (setToSend) => {
       }
     });
     sound.play();
+  }
+  else{
+    selectedSet.value = setToSend;
+    sound = new Howl({
+      src: [selectedSet.value.setRoute],
+      onplay: () => {
+        updateTimer();
+        duration.value = formatTime(Math.round(sound.duration()))
+        playing.value = true
+        musicPlayerBar.value = true 
+      },
+      onpause:()=>{
+      playing.value = false;
+    },
+      onend: ()=>{
+        playing.value = false;
+      }
+    });
+    sound.play();
+
   }
 };
 
@@ -434,7 +438,7 @@ function formatTime(secs) {
 const handleMouseMove = (event) => {
   hoverX.value = event.clientX;
   const windowWidth = window.innerWidth; // Obtener el ancho de la ventana del navegador  // Calcular el porcentaje del clic con respecto al ancho de la barra de progreso
-  const percentClicked = (hoverX.value / windowWidth) * 103.33;//porq 103 y no 100?
+  const percentClicked = (hoverX.value / windowWidth) * 100;//porq 103 y no 100?
   const newPosition = (percentClicked / 100) * sound.duration();
   hoverTimer.value = formatTime(Math.round(newPosition))
 };
@@ -442,7 +446,7 @@ const handleMouseMove = (event) => {
 const handleProgressBarClick = (event) => {
   const mouseX = event.clientX; // Obtener la posición horizontal del clic
   const windowWidth = window.innerWidth; // Obtener el ancho de la ventana del navegador  // Calcular el porcentaje del clic con respecto al ancho de la barra de progreso
-  const percentClicked = (mouseX / windowWidth) * 103.33;
+  const percentClicked = (mouseX / windowWidth) * 100;
   console.log("clickeas el % "+percentClicked)
   console.log("clickeas el mouseX "+mouseX)
   console.log("clickeas el windowWidth "+windowWidth)
