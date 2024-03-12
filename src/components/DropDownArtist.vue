@@ -3,7 +3,7 @@
     <div class="relative ">
       <ListboxButton class="relative w-full h-2/5 italic font-medium text-white bg-gradient-to-br from-neutral-900 to-zinc-700 rounded-[40px] shadow border border-white border-opacity-50 backdrop-blur-[37.38px] cursor-pointer pl-3 pr-10 text-left  ring-1 ring-inset ring-purple-300 focus:outline-none focus:ring-2 sm:text-sm sm:leading-6 focus:ring-purple-500 py-2  focus hover:shadow-lg hover:shadow-purple-500/50 transition duration-150 ease-out md:ease-in">
         <span class="flex items-center" >
-          <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">{{ selected && selected.tipo ? selected.tipo : 'Buscar Artista'  }}</span>
+          <span :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']">{{ selected && selected.tipo ? selected.tipo : 'Seleccionar Artista'  }}</span>
         </span>
         <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
           <ChevronUpDownIcon class="h-5 w-5 text-purple-400" aria-hidden="true" />

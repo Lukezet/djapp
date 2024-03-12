@@ -33,7 +33,7 @@
           </div>
           <div class="flex flex-col justify-center items-start text-white italic">
             <label for="searcher">Genero musical:</label>
-            <DropDownArtist></DropDownArtist>
+            <DropDownGenders></DropDownGenders>
           </div>
         </section>
         <h3 class="font-montserrat text-xl font-bold text-opacity-20 text-white xl:mb-24">LISTA DE SETS</h3>
@@ -81,7 +81,7 @@
             <img class="w-8" src="../assets/next.svg" alt="play">
     </button>
     </div>
-    <VolumeControl class="absolute top-8 right-4 w-48" />
+    <VolumeControl class="absolute hidden top-8 right-4 w-48 md:block" />
     <img class="w-12 absolute left-4 top-4 rounded-lg shadow-lg shadow-neutral-900" :src="selectedSet.img" alt="imgSetPlayList">
     <h4 class="font-['Montserrat'] text-opacity-40 text-white">{{selectedSet.name}}</h4>
     <section  class="w-full flex justify-start"
@@ -108,6 +108,7 @@ import DropDownArtist from "../components/DropDownArtist.vue";
 import ArticleSet from "../components/ArticleSet.vue"
 import VolumeControl from "../components/VolumeControl.vue";
 import {Howl, Howler} from "howler";
+import DropDownGenders from "../components/DropDownGenders.vue";
 
 const pinkFloydSongs = [
   'Shine On You Crazy Diamond',

@@ -9,10 +9,10 @@
             <router-link :to="{ name: 'uploadFiles' }" class="item">Cargar sets</router-link>
           </li>  
           <li class="nav-item">
-            <div class="item">Facturacion</div>
+            <div class="item">Membresia</div>
           </li>
           <li class="nav-item">
-            <div class="item">Proveedores</div>
+            <div class="item">Login</div>
           </li>
       </ul>
     </header>
