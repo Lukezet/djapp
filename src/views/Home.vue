@@ -25,7 +25,7 @@
             <label for="searcher">Buscador:</label>
             <input type="searcher" placeholder="Buscar pack"
               class="w-full  italic font-medium pl-12 py-2 text-white bg-gradient-to-br from-neutral-900 to-zinc-700 rounded-[40px] shadow border border-white border-opacity-50 ring-1 ring-inset ring-purple-300 backdrop-blur-[37.38px] hover:shadow-lg hover:shadow-purple-500/50 transition duration-150 ease-out md:ease-in">
-            <img class="absolute w-6 bottom-2 left-4" src="../assets/search-normal.svg">
+            <img class="absolute w-6 bottom-3 left-4" src="../assets/search-normal.svg">
           </div>
           <div class="flex flex-col justify-center items-start text-white italic">
             <label for="searcher">Artista:</label>

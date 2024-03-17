@@ -12,14 +12,14 @@
             <div class="item">Membresia</div>
           </li>
           <li class="nav-item">
-            <div class="item">Login</div>
+            <Logout/>
           </li>
       </ul>
     </header>
 </template>
 <script setup>
 import { ref } from 'vue';
-
+import Logout from './Logout.vue';
 const isMenuVisible = ref(false);
 
 const showMenu = () => { 
