@@ -11,8 +11,8 @@
           <li class="nav-item">
             <div class="item">Membresia</div>
           </li>
-          <li class="nav-item">
-            <Logout/>
+          <li class="nav-item z-20">
+            <div class="item"><Logout/></div>
           </li>
       </ul>
     </header>
@@ -78,11 +78,17 @@ const showMenu = () => {
     color:#7D47DC;
 
 }
+
 .item:hover::after {
     right: 0;
     height: 2px;
     background: #7D47DC;
+    pointer-events: none;
 
+}
+
+.nav-menu .nav-item:nth-child(3) .item:hover::after {
+    background: none; /* Cambia el color del subrayado al pasar el ratón por encima */
 }
 .nav-main ul.nav-menu{
     flex: 1;
