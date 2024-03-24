@@ -29,7 +29,7 @@
               type="password" name="" required="" v-model="registerPassword">
             <label>Ingresa tu contraseña</label>
           </div>
-          <button id="btn-awesome" href="#" @click.prevent="authUser">
+          <button class="btn-awesome" href="#" @click.prevent="authUser">
             <span></span>
             <span></span>
             <span></span>
@@ -60,7 +60,7 @@
             <label>Ingresa tu contraseña</label>
           </div>
           <a class="text-xs text-white" href="#">¿Olvidaste tu contraseña?</a>
-          <button id="btn-awesome" href="#" @click.prevent="authUser">
+          <button class="btn-awesome" href="#" @click.prevent="authUser">
             <span></span>
             <span></span>
             <span></span>
@@ -138,26 +138,26 @@ import axios from 'axios';
 // Define la URL a la que enviar la solicitud POST
 const url = 'https://ejemplo.com/api/endpoint';
 
-// Define los datos que quieres enviar en el cuerpo de la solicitud
-const registerData = {
-  nombre: registerName.value,
-  email: registerEmail.value,
-  username: registerUserName.value,
-  password: registerPassword.value,
-  repeatPass: registerPassword.value
-}
+// // Define los datos que quieres enviar en el cuerpo de la solicitud
+// const registerData = {
+//   nombre: registerName.value,
+//   email: registerEmail.value,
+//   username: registerUserName.value,
+//   password: registerPassword.value,
+//   repeatPass: registerPassword.value
+// }
 
-// Realiza la solicitud POST utilizando Axios
-axios.post('/api/LoginContable/Registro', registerData)
-  .then(response => {
-    // Maneja la respuesta exitosa
-    console.log('Respuesta exitosa:', response.data);
-    alert('Respuesta exitosa:');
-  })
-  .catch(error => {
-    // Maneja el error en caso de que la solicitud falle
-    console.error('Error al enviar la solicitud:', error);
-  });
+// // Realiza la solicitud POST utilizando Axios
+// axios.post('/api/LoginContable/Registro', registerData)
+//   .then(response => {
+//     // Maneja la respuesta exitosa
+//     console.log('Respuesta exitosa:', response.data);
+//     alert('Respuesta exitosa:');
+//   })
+//   .catch(error => {
+//     // Maneja el error en caso de que la solicitud falle
+//     console.error('Error al enviar la solicitud:', error);
+//   });
 </script>
 
 <style scoped>
@@ -420,7 +420,7 @@ form {
 
 /*awesome button*/
 
-#btn-awesome {
+.btn-awesome {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -436,7 +436,7 @@ form {
   letter-spacing: 4px
 }
 
-#btn-awesome:hover {
+.btn-awesome:hover {
   background: #8b34ee;
   color: #fff;
   border-radius: 5px;
@@ -446,12 +446,12 @@ form {
     0 0 100px #8b34ee;
 }
 
-#btn-awesome span {
+.btn-awesome span {
   position: absolute;
   display: block;
 }
 
-#btn-awesome span:nth-child(1) {
+.btn-awesome span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;
@@ -471,7 +471,7 @@ form {
   }
 }
 
-#btn-awesome span:nth-child(2) {
+.btn-awesome span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 2px;
@@ -492,7 +492,7 @@ form {
   }
 }
 
-#btn-awesome span:nth-child(3) {
+.btn-awesome span:nth-child(3) {
   bottom: 0;
   right: -100%;
   width: 100%;
@@ -513,7 +513,7 @@ form {
   }
 }
 
-#btn-awesome span:nth-child(4) {
+.btn-awesome span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 2px;

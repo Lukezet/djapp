@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import UploadFiles from "../views/UploadFiles.vue";
 import LoginLayout from "../layouts/LoginLayout.vue";
 import { useAuthStore } from '../store/auth';
+import Memberships from "../views/Memberships.vue";
 
 const routes = [
   {
@@ -25,6 +26,14 @@ const routes = [
         path: "/upload-Files",
         name: "uploadFiles",
         component: UploadFiles,
+        meta:{
+          requireAuth:true
+        }
+      },
+      {
+        path: "/memberships",
+        name: "memberships",
+        component: Memberships,
         meta:{
           requireAuth:true
         }

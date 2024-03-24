@@ -9,7 +9,7 @@
             <router-link :to="{ name: 'uploadFiles' }" class="item">Cargar sets</router-link>
           </li>  
           <li class="nav-item">
-            <div class="item">Membresia</div>
+            <router-link :to="{ name: 'memberships' }" class="item">Membresias</router-link>
           </li>
           <li class="nav-item z-20">
             <div class="item"><Logout/></div>
